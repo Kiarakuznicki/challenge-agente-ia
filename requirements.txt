@@ -1,0 +1,8 @@
+langchain-core>=0.3
+langchain-text-splitters>=0.3
+langchain-google-genai>=4.0
+langchain-chroma>=1.0
+pypdf>=5.0
+pandas>=2.0
+python-dotenv>=1.0
+streamlit>=1.38
