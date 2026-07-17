@@ -6,6 +6,7 @@ import config
 
 SYSTEM_PROMPT = """Sos un asistente interno que responde preguntas de empleados
 basandote EXCLUSIVAMENTE en los fragmentos de documento que se te dan como contexto.
+
 Reglas:
 1. Si la respuesta esta en el contexto, respondela de forma clara y directa, en español.
 2. Si el contexto NO contiene informacion suficiente para responder, decilo
@@ -24,6 +25,7 @@ PROMPT = ChatPromptTemplate.from_messages(
     ]
 )
 
+
 def crear_llm():
     return ChatGoogleGenerativeAI(
         model=config.LLM_MODEL,
@@ -35,8 +37,9 @@ def formatear_contexto(documentos) -> str:
     """Concatena los fragmentos recuperados en un solo bloque de texto para el prompt."""
     partes = []
     for i, doc in enumerate(documentos, start=1):
+        fuente = doc.metadata.get("source", "?")
         pagina = doc.metadata.get("page", "?")
-        partes.append(f"[Fragmento {i} - página {pagina}]\n{doc.page_content}")
+        partes.append(f"[Fragmento {i} - {fuente}, página {pagina}]\n{doc.page_content}")
     return "\n\n".join(partes)
 
 
@@ -58,6 +61,7 @@ def responder_pregunta(pregunta: str, vectorstore, llm=None) -> dict:
 
     return {"respuesta": respuesta, "fuentes": documentos}
 
+
 if __name__ == "__main__":
     # Prueba aislada de punta a punta. Requiere que ya exista el vector
     # store (haber corrido antes python -m src.vectorstore).
@@ -68,4 +72,4 @@ if __name__ == "__main__":
     print("Respuesta:", resultado["respuesta"])
     print("\nFuentes usadas:")
     for doc in resultado["fuentes"]:
-        print(f"- página {doc.metadata.get('page')}")
+        print(f"- {doc.metadata.get('source')} (página {doc.metadata.get('page')})")
