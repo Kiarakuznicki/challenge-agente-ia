@@ -1,7 +1,7 @@
 import os
 
 import config
-from src.loader import cargar_y_dividir_pdf
+from src.loader import cargar_y_dividir_pdfs
 from src.vectorstore import crear_vectorstore, cargar_vectorstore
 from src.agent import responder_pregunta
 
@@ -10,8 +10,8 @@ def obtener_vectorstore():
         print(f"Cargando vector store existente desde '{config.PERSIST_DIRECTORY}'...")
         return cargar_vectorstore()
 
-    print(f"No hay un vector store previo. Procesando '{config.PDF_PATH}'...")
-    chunks = cargar_y_dividir_pdf()
+    print(f"No hay un vector store previo. Procesando documentos en '{config.DATA_DIR}'...")
+    chunks = cargar_y_dividir_pdfs()
     print(f"Documento dividido en {len(chunks)} fragmentos. Generando embeddings...")
     db = crear_vectorstore(chunks)
     print("Vector store creado y guardado. Las próximas ejecuciones van a ser más rápidas.\n")
@@ -35,8 +35,8 @@ def main():
 
         resultado = responder_pregunta(pregunta, db)
         print("\nRespuesta:", resultado["respuesta"])
-        paginas = sorted({doc.metadata.get("page") for doc in resultado["fuentes"]})
-        print(f"(Fuente: páginas {paginas} del documento)\n")
+        fuentes = sorted({f"{d.metadata.get('source')} (pág. {d.metadata.get('page')})" for d in resultado["fuentes"]})
+        print(f"(Fuentes: {', '.join(fuentes)})\n")
 
 if __name__ == "__main__":
     main()

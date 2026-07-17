@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PDF_PATH = "data/politica_interna_novapay.pdf"
+DATA_DIR = "data"
 
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 150
@@ -15,7 +15,7 @@ EMBEDDING_MODEL = "gemini-embedding-001"
 LLM_MODEL = "gemini-3.5-flash"
 LLM_TEMPERATURE = 0
 
-TOP_K = 4
+TOP_K = 6
 
 try: 
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")

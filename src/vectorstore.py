@@ -1,20 +1,38 @@
+import time
+
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 import config
 
+
 def crear_embeddings():
     return GoogleGenerativeAIEmbeddings(model=config.EMBEDDING_MODEL)
 
-def crear_vectorstore(chunks):
+
+def crear_vectorstore(chunks, tamano_lote: int = 20, pausa_segundos: int = 15):
     embeddings = crear_embeddings()
-    db = Chroma.from_documents(
-        documents=chunks,
-        embedding=embeddings,
+    db = Chroma(
         collection_name=config.COLLECTION_NAME,
+        embedding_function=embeddings,
         persist_directory=config.PERSIST_DIRECTORY,
     )
+
+    total = len(chunks)
+    total_lotes = (total + tamano_lote - 1) // tamano_lote
+
+    for indice_lote, inicio in enumerate(range(0, total, tamano_lote), start=1):
+        lote = chunks[inicio: inicio + tamano_lote]
+        print(f"Indexando lote {indice_lote}/{total_lotes} ({len(lote)} fragmentos)...")
+        db.add_documents(lote)
+
+        es_ultimo_lote = indice_lote == total_lotes
+        if not es_ultimo_lote:
+            print(f"  Pausando {pausa_segundos}s para respetar el límite gratuito de la API...")
+            time.sleep(pausa_segundos)
+
     return db
+
 
 def cargar_vectorstore():
     embeddings = crear_embeddings()
@@ -25,14 +43,16 @@ def cargar_vectorstore():
     )
     return db
 
+
 if __name__ == "__main__":
-    from src.loader import cargar_y_dividir_pdf
-    chunks = cargar_y_dividir_pdf()
-    print(f"Indexando {len(chunks)}")
+    from src.loader import cargar_y_dividir_pdfs
+
+    chunks = cargar_y_dividir_pdfs()
+    print(f"Indexando {len(chunks)} fragmentos en lotes...")
     db = crear_vectorstore(chunks)
     print("Vector store creado y persistido en:", config.PERSIST_DIRECTORY)
 
-    resultados = db.similarity_search("¿Cada cuánto hay que renovar la contraseña?", k=2)
-    print("\n--- Prueba de busqueda semantica ---")
+    resultados = db.similarity_search("política de privacidad", k=2)
+    print("\n--- Prueba de búsqueda semántica ---")
     for r in resultados:
-        print(f"(pagina {r.metadata.get('page')}):", r.page_content[:150], "...\n")
+        print(f"({r.metadata.get('source')}, página {r.metadata.get('page')}):", r.page_content[:150], "...\n")
