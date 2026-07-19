@@ -1,14 +1,20 @@
 import os
+import shutil
 
 import config
 from src.loader import cargar_y_dividir_pdfs
-from src.vectorstore import crear_vectorstore, cargar_vectorstore
+from src.vectorstore import crear_vectorstore, cargar_vectorstore, indexacion_completa
 from src.agent import responder_pregunta
 
+
 def obtener_vectorstore():
-    if os.path.isdir(config.PERSIST_DIRECTORY) and os.listdir(config.PERSIST_DIRECTORY):
+    if indexacion_completa():
         print(f"Cargando vector store existente desde '{config.PERSIST_DIRECTORY}'...")
         return cargar_vectorstore()
+
+    if os.path.isdir(config.PERSIST_DIRECTORY):
+        print("Se encontro un indice incompleto de un intento anterior; se descarta.")
+        shutil.rmtree(config.PERSIST_DIRECTORY)
 
     print(f"No hay un vector store previo. Procesando documentos en '{config.DATA_DIR}'...")
     chunks = cargar_y_dividir_pdfs()
@@ -16,6 +22,7 @@ def obtener_vectorstore():
     db = crear_vectorstore(chunks)
     print("Vector store creado y guardado. Las próximas ejecuciones van a ser más rápidas.\n")
     return db
+
 
 def main():
     print("=" * 60)
@@ -38,6 +45,6 @@ def main():
         fuentes = sorted({f"{d.metadata.get('source')} (pág. {d.metadata.get('page')})" for d in resultado["fuentes"]})
         print(f"(Fuentes: {', '.join(fuentes)})\n")
 
+
 if __name__ == "__main__":
     main()
-      
