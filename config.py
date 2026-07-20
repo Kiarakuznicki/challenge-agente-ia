@@ -12,7 +12,7 @@ PERSIST_DIRECTORY = "db"
 COLLECTION_NAME = "doc_base"
 
 EMBEDDING_MODEL = "gemini-embedding-001"
-LLM_MODEL = "gemini-3.5-flash"
+LLM_MODEL = "gemini-2.5-flash"
 LLM_TEMPERATURE = 0
 
 TOP_K = 6

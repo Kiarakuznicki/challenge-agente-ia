@@ -34,7 +34,6 @@ def crear_llm():
 
 
 def formatear_contexto(documentos) -> str:
-    """Concatena los fragmentos recuperados en un solo bloque de texto para el prompt."""
     partes = []
     for i, doc in enumerate(documentos, start=1):
         fuente = doc.metadata.get("source", "?")
@@ -44,10 +43,6 @@ def formatear_contexto(documentos) -> str:
 
 
 def responder_pregunta(pregunta: str, vectorstore, llm=None) -> dict:
-    """
-    Ejecuta el flujo RAG completo para una pregunta y devuelve tanto la
-    respuesta como los fragmentos que se usaron como fuente.
-    """
     llm = llm or crear_llm()
     retriever = vectorstore.as_retriever(search_kwargs={"k": config.TOP_K})
 

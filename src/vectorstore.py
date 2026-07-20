@@ -20,7 +20,7 @@ def indexacion_completa() -> bool:
     return os.path.isfile(marcador)
 
 
-def crear_vectorstore(chunks, tamano_lote: int = 20, pausa_segundos: int = 15):
+def crear_vectorstore(chunks, tamano_lote: int = 20, pausa_segundos: int = 7):
     marcador = os.path.join(config.PERSIST_DIRECTORY, MARCADOR_COMPLETO)
     if os.path.isfile(marcador):
         os.remove(marcador)
