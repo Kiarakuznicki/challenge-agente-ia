@@ -1,7 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
-
 import config
 
 SYSTEM_PROMPT = """Sos un asistente interno que responde preguntas de empleados
