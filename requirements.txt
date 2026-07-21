@@ -6,3 +6,5 @@ pypdf>=5.0
 pandas>=2.0
 python-dotenv>=1.0
 streamlit>=1.38
+
+langchain-groq>=0.2

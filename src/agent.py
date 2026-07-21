@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 
 import config
 
@@ -27,11 +27,11 @@ PROMPT = ChatPromptTemplate.from_messages(
 
 
 def crear_llm():
-    return ChatGoogleGenerativeAI(
+    return ChatGroq(
         model=config.LLM_MODEL,
         temperature=config.LLM_TEMPERATURE,
+        api_key=config.GROQ_API_KEY,
     )
-
 
 def formatear_contexto(documentos) -> str:
     partes = []
@@ -46,11 +46,9 @@ def responder_pregunta(pregunta: str, vectorstore, llm=None) -> dict:
     llm = llm or crear_llm()
     retriever = vectorstore.as_retriever(search_kwargs={"k": config.TOP_K})
 
-    # 1) Retrieval
     documentos = retriever.invoke(pregunta)
     contexto = formatear_contexto(documentos)
 
-    # 2) Generation
     cadena = PROMPT | llm | StrOutputParser()
     respuesta = cadena.invoke({"context": contexto, "pregunta": pregunta})
 
@@ -58,8 +56,6 @@ def responder_pregunta(pregunta: str, vectorstore, llm=None) -> dict:
 
 
 if __name__ == "__main__":
-    # Prueba aislada de punta a punta. Requiere que ya exista el vector
-    # store (haber corrido antes python -m src.vectorstore).
     from src.vectorstore import cargar_vectorstore
 
     db = cargar_vectorstore()
