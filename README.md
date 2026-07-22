@@ -10,7 +10,7 @@ Nexalend cuenta con múltiples documentos internos (FAQ, términos y condiciones
 
 ## Arquitectura
 
-Usuario
+````Usuario
 │ pregunta en lenguaje natural
 ▼
 streamlit_app.py (interfaz web, paleta violeta/azul/blanco)
@@ -19,7 +19,7 @@ streamlit_app.py (interfaz web, paleta violeta/azul/blanco)
 src/agent.py ── Retriever ──▶ Chroma (vector store) ──▶ data/\*.pdf
 │ (ya indexados)
 │
-└── Prompt + contexto recuperado ──▶ Gemini (LLM) ──▶ Respuesta + fuentes
+└── Prompt + contexto recuperado ──▶ Gemini (LLM) ──▶ Respuesta + fuentes```
 
 1. **`src/loader.py`** (Etapa 1) — recorre automáticamente todos los PDFs de `data/`, extrae su texto con `pypdf` y lo divide en fragmentos (chunks) con `RecursiveCharacterTextSplitter`.
 2. **`src/vectorstore.py`** — convierte esos fragmentos en embeddings (`GoogleGenerativeAIEmbeddings`) y los indexa en un vector store local (`Chroma`), en lotes con pausas (para respetar el límite de la capa gratuita de la API). La indexación se marca como completa recién al terminar todos los lotes, para evitar quedar con un índice a medio construir si el proceso se interrumpe.
@@ -70,7 +70,7 @@ pip install -r requirements.txt
 
 copy .env.example .env          # Windows
 # cp .env.example .env          # Mac/Linux
-```
+````
 
 Editá `.env` y pegá tu propia clave de Gemini (se consigue gratis en https://aistudio.google.com/app/apikey):
 GOOGLE_API_KEY=tu_clave_aquiv
