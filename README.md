@@ -81,36 +81,68 @@ Ejecutar:
 streamlit run streamlit_app.py
 ```
 
-La primera ejecución indexa los 9 documentos (tarda unos minutos, por las pausas necesarias para respetar el límite gratuito de la API). Las siguientes ejecuciones cargan el índice ya guardado en `db/` y son instantáneas.
+La primera ejecución indexa los 9 documentos. Las siguientes ejecuciones cargan el índice ya guardado en `db/` y son instantáneas.
 
 ## Ejemplos de preguntas y respuestas
 
-> ⚠️ COMPLETAR: reemplazar estos 4 ejemplos por preguntas reales que hayas probado en tu propia app, con la respuesta exacta que te dio.
+**Pregunta:** [¿Qué es NexaLend?]
+**Respuesta:** [NexaLend es una empresa fintech ficticia que se dedica al desarrollo de soluciones financieras digitales, diseñadas para simplificar la forma en que personas, comercios, emprendedores y empresas administran su dinero mediante una plataforma moderna, intuitiva, segura y completamente digital.
 
-**Pregunta:** [completar]
-**Respuesta:** [completar]
+Fuente: DESCRIPCIÓN INSTITUCIONAL DE LA EMPRESA.pdf (pág. 12), DESCRIPCIÓN INSTITUCIONAL DE LA EMPRESA.pdf (pág. 2), DESCRIPCIÓN INSTITUCIONAL DE LA EMPRESA.pdf (pág. 7), PREGUNTAS FRECUENTES (FAQ).pdf (pág. 1)]
 
-**Pregunta:** [completar]
-**Respuesta:** [completar]
+**Pregunta:** [¿Qué es una billetera virtual?]
+**Respuesta:** [Una billetera virtual (también llamada Billetera Digital) es una cuenta virtual donde el usuario puede almacenar y administrar su dinero electrónico o saldo dentro de la plataforma. Permite gestionar fondos, recibir y enviar transferencias, y realizar pagos de forma digital.
 
-**Pregunta:** [completar]
-**Respuesta:** [completar]
+Fuente: DESCRIPCIÓN INSTITUCIONAL DE LA EMPRESA.pdf (pág. 12), DESCRIPCIÓN INSTITUCIONAL DE LA EMPRESA.pdf (pág. 2), DESCRIPCIÓN INSTITUCIONAL DE LA EMPRESA.pdf (pág. 7), TÉRMINOS Y CONDICIONES DE USO.pdf (pág. 2)]
 
-**Pregunta:** (una que sepas que NO está en los documentos, para mostrar que el agente no inventa)
-**Respuesta:** [completar — debería decir algo como "No encontré esa información en el documento"]
+**Pregunta:** [¿Cómo protege NexaLend mis operaciones?]
+**Respuesta:** [NexaLend protege tus operaciones mediante una serie de controles y tecnologías distribuidos en varios niveles:
+
+Protección de datos
+
+Tokenización de la información sensible.
+Hash seguro para las contraseñas.
+Gestión centralizada y rotación de claves criptográficas.
+Monitoreo y detección en tiempo real
+
+Las transacciones se analizan al instante considerando: frecuencia, montos, ubicación geográfica, dispositivo, horarios, historial del usuario y cambios repentinos en el patrón de uso.
+Si se detecta un comportamiento atípico, la operación puede ser retenida para su revisión.
+Prevención de fraude
+
+Combina controles automáticos y revisiones manuales para identificar y bloquear distintos tipos de fraude.
+Incluye controles antifraude dentro de los procesos de validación de identidad (captura de documento, validación biométrica, comparación facial automatizada, verificación de correo y telefónica).
+Seguridad de aplicaciones y APIs
+
+Revisión de código, análisis de vulnerabilidades, pruebas de penetración y validación de entradas.
+Gestión segura de sesiones y protección contra ataques comunes como inyección de código o XSS.
+Las APIs utilizan mecanismos de autenticación y autorización.
+Seguridad de la infraestructura tecnológica
+
+Segmentación de redes, firewalls, balanceadores de carga y sistemas de detección y prevención de intrusiones (IDS/IPS).
+Protección contra ataques DDoS, monitoreo de disponibilidad, gestión segura de configuraciones y copias de seguridad periódicas.
+Protección de redes
+
+Todas las comunicaciones entre usuarios y la plataforma se realizan mediante protocolos cifrados.
+Con este conjunto de medidas, NexaLend busca garantizar la confidencialidad, integridad y disponibilidad de tus operaciones y datos.
+
+Fuente: POLÍTICA DE PRIVACIDAD Y PROTECCIÓN DE DATOS.pdf (pág. 7), POLÍTICA DE SEGURIDAD Y PREVENCIÓN DE FRAUDES.pdf (pág. 6), POLÍTICA DE SEGURIDAD Y PREVENCIÓN DE FRAUDES.pdf (pág. 7), POLÍTICA DE SEGURIDAD Y PREVENCIÓN DE FRAUDES.pdf (pág. 8)]
+
+**Pregunta:** [¿Qué deportes juegan los empleados de NexaLend?]
+**Respuesta:** [No encontré esa información en el documento.
+
+Fuente: DESCRIPCIÓN INSTITUCIONAL DE LA EMPRESA.pdf (pág. 10), POLÍTICA DE PRIVACIDAD Y PROTECCIÓN DE DATOS.pdf (pág. 13), PREGUNTAS FRECUENTES (FAQ).pdf (pág. 1)]
 
 ## Deploy
 
-**Nota sobre la plataforma elegida:** el enunciado del challenge sugiere Oracle Cloud Infrastructure (OCI) para el despliegue, permitiendo explícitamente el uso de "otra herramienta si tiene más sentido". Se optó por **Streamlit Community Cloud** por tratarse de la plataforma nativa del framework de la interfaz (Streamlit), lo que permite un despliegue continuo directamente desde este repositorio de GitHub, sin necesidad de gestionar infraestructura de servidor por separado.
+**Nota sobre la plataforma elegida:** Se optó por **Streamlit Community Cloud** por tratarse de la plataforma nativa del framework de la interfaz (Streamlit), lo que permite un despliegue continuo directamente desde este repositorio de GitHub, sin necesidad de gestionar infraestructura de servidor por separado.
 
-- **URL pública:** https://challenge-agente-ia-m83srbauwlccweayczlomi.streamlit.app
-- **Evidencia:** _(agregar acá la captura de pantalla de la app funcionando)_
+- **URL pública:** https://challenge-agente-ia-m83srbauwlccweayczlomi.streamlit.app/
+- **Evidencia:** ![alt text](image.png)
 
 ## Limitaciones conocidas
 
-- La capa gratuita de la API de Gemini tiene un límite de solicitudes por minuto. Bajo uso intenso o simultáneo, puede aparecer un error temporal (HTTP 429); reintentar tras unos segundos lo resuelve.
 - La app se "duerme" tras un período de inactividad prolongado (comportamiento estándar de Streamlit Community Cloud); la primera visita tras la inactividad puede tardar unos segundos más en responder.
 
 ## Autor
 
-Kiara Kuznicki — Challenge Oracle + Alura, Generación G10
+Kiara Kuznicki — Challenge Oracle + Alura, Generación G1
