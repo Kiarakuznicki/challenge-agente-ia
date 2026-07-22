@@ -79,12 +79,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-if "vectorstore" not in st.session_state:
-    with st.spinner("Cargando/indexando la base de conocimiento..."):
-        st.session_state.vectorstore = obtener_vectorstore()
+@st.cache_resource(show_spinner="Cargando/indexando la base de conocimiento...")
+def obtener_vectorstore_compartido():
+    return obtener_vectorstore()
+
+
+vectorstore = obtener_vectorstore_compartido()
 
 if "historial" not in st.session_state:
     st.session_state.historial = []
+
 
 if "pregunta_sugerida" not in st.session_state:
     st.session_state.pregunta_sugerida = None
@@ -121,7 +125,7 @@ st.session_state.pregunta_sugerida = None
 
 if pregunta_final:
     with st.spinner("Buscando en los documentos..."):
-        resultado = responder_pregunta(pregunta_final, st.session_state.vectorstore)
+        resultado = responder_pregunta(pregunta_final, vectorstore)
     fuentes = sorted(
         {
             f"{d.metadata.get('source', 'documento')} (pág. {d.metadata.get('page', '?')})"
@@ -132,3 +136,5 @@ if pregunta_final:
         {"pregunta": pregunta_final, "respuesta": resultado["respuesta"], "fuentes": fuentes}
     )
     st.rerun()
+
+    
