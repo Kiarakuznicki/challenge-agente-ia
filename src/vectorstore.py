@@ -16,12 +16,11 @@ def crear_embeddings():
 
 
 def indexacion_completa() -> bool:
-    """Indica si ya existe un indice completo y confiable en disco."""
     marcador = os.path.join(config.PERSIST_DIRECTORY, MARCADOR_COMPLETO)
     return os.path.isfile(marcador)
 
 
-def crear_vectorstore(chunks, tamano_lote: int = 20, pausa_segundos: int = 15):
+def crear_vectorstore(chunks, tamano_lote: int = 30, pausa_segundos: int = 5):
     marcador = os.path.join(config.PERSIST_DIRECTORY, MARCADOR_COMPLETO)
     if os.path.isfile(marcador):
         os.remove(marcador)
@@ -50,7 +49,7 @@ def crear_vectorstore(chunks, tamano_lote: int = 20, pausa_segundos: int = 15):
             except Exception as e:
                 if intento == intentos_maximos:
                     raise
-                espera = 65  # el limite de Google es "por minuto"; 65s da margen de sobra
+                espera = 65  
                 print(f"  Error en el lote {indice_lote} (intento {intento}/{intentos_maximos}): {e}")
                 print(f"  Reintentando en {espera}s...")
                 time.sleep(espera)
@@ -60,7 +59,6 @@ def crear_vectorstore(chunks, tamano_lote: int = 20, pausa_segundos: int = 15):
             print(f"  Pausando {pausa_segundos}s para respetar el límite gratuito de la API...")
             time.sleep(pausa_segundos)
 
-    # Solo si TODOS los lotes terminaron bien, marcamos el indice como completo.
     os.makedirs(config.PERSIST_DIRECTORY, exist_ok=True)
     with open(marcador, "w") as f:
         f.write("ok")
